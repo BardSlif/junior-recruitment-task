@@ -6,6 +6,25 @@ class View extends EventEmitter {
         super();
         //List container
         this.tasksListNode = document.querySelector('.list-of-tasks');
+
+        //Create new task button and event handler
+        this.addTaskButton = document.querySelector('.add-task-button');
+        this.addTaskButton.addEventListener('click', (evt) => { this.validateInput(evt) })
+        this.inputField = document.getElementById('text-field');
+    }
+
+    /**
+     * Validate input, if not empty emit 'add' function 
+     * @param {objet} evt  
+     */
+    
+    validateInput(evt) {
+        evt.preventDefault();
+        if (!this.inputField.value) {
+            return console.log('nope');
+        }
+
+        this.emit('add', this.inputField.value);
     }
 
     /**

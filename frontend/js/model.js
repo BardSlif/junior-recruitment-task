@@ -8,7 +8,7 @@ class Model extends EventEmitter {
     }
 
     /**
-     * Fetch data from API
+     * GET all data from API
      */
 
     fetchTasks() {
@@ -24,7 +24,7 @@ class Model extends EventEmitter {
     }
 
     /**
-     * Get fetched array of data and itarate over them to call addTask function
+     * Get fetched array of data and add them to this.tasks
      * @param {array} data fetched array of data
      */
 
@@ -32,6 +32,37 @@ class Model extends EventEmitter {
         //console.log(data);
         this.tasks = [...data];
         this.emit('update');
+    }
+
+    /**
+     * Add single task
+     * @param {object} data task
+     */
+
+    addSingleTask(data) {
+        this.tasks.push(data);
+        this.emit('update');
+    }
+
+    /**
+     * POST task to the API
+     * @param {data} data task 
+     */
+
+    newTask(data) {
+
+        const headers = {
+            "Content-Type": "application/json",
+        }
+
+        fetch('https://todo-simple-api.herokuapp.com/todos', {
+            method: 'POST',
+            headers: headers,
+            body: JSON.stringify(data)
+        })
+            .then(response => response.json())
+            .then(res => this.addSingleTask(res.data))
+            .catch((e) => console.log(e));
     }
 
 }
