@@ -6,7 +6,9 @@ class Controller {
         // Handle 'update' call from model
         model.handle('update', () => this.renderView());
         //Handle 'status' call from model
-        model.handle('status', (status) => this.showStatusInfo(status));
+        model.handle('state', (state) => this.showStateInfo(state));
+        //Loading 'loadingStatus'
+        model.handle('loadingState', (state) => this.showLodingStateInfo(state));
 
         //Handle 'add' call from view 
         view.handle('add', (data) => this.addTask(data));
@@ -53,11 +55,20 @@ class Controller {
 
     /**
      * Call createStatusInfo function with proper message type 
-     * @param {object} status  success or error
+     * @param {object} state  success or error
      */
 
-    showStatusInfo(status) {
-        return this.view.createStatusInfo(status.isSuccess, status.string);
+    showStateInfo(state) {
+        return this.view.createStateInfo(state.isSuccess, state.string);
+    }
+
+    /**
+     * Call createLoadingStateInfo in view
+     * @param {object} state 
+     */
+
+    showLodingStateInfo(state) {
+        return this.view.createLoadingStateInfo(state);
     }
 
     /**

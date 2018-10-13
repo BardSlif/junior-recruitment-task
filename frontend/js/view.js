@@ -28,7 +28,7 @@ class View extends EventEmitter {
     validateInput(evt) {
         evt.preventDefault();
         if (!this.inputField.value) {
-            return this.createStatusInfo(false, 'Input value cannot be empty!');
+            return this.createStateInfo(false, 'Input value cannot be empty!');
         }
 
         return this.emit('add', this.inputField.value);
@@ -53,12 +53,30 @@ class View extends EventEmitter {
     }
 
     /**
+     * Display loading information at initial fetch
+     * @param {object} state 
+     */
+    
+    createLoadingStateInfo(state) {
+
+        if (state.state == true) {
+            this.toDoListContainer.insertAdjacentHTML('beforebegin',
+                `<h2 class='operation-info'>${state.string}</h2>`
+            );
+        }
+        else {
+            const elem = document.querySelector('.operation-info');
+            elem.parentNode.removeChild(elem);
+        }
+    }
+
+    /**
      * Create message to communicate error or success when action is taken
      * @param {boolean} isSuccess type of message
      * @param {String} info output message
      */
 
-    createStatusInfo(isSuccess = null, info) {
+    createStateInfo(isSuccess = null, info) {
 
         this.toDoListContainer.insertAdjacentHTML('beforebegin',
             `<h2 class='operation-info ${isSuccess ? 'success' : 'error'}'>${info}</h2>`

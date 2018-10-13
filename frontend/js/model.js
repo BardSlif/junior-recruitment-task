@@ -5,6 +5,8 @@ class Model extends EventEmitter {
     constructor() {
         super();
         this.tasks = [];
+        //Boolean for initial loading information
+        this.start = true;
     }
 
     /**
@@ -20,7 +22,12 @@ class Model extends EventEmitter {
         })
             .then(response => response.json())
             .then(res => this.addFetchedData(res.data))
-            .catch((e) => console.log(e));
+            .catch((e) => this.emit('state', { string: e, isSuccess: false }));
+
+            if (this.start) {
+                this.emit('loadingState', {string: 'Loading...', state: true});
+            }
+            
     }
 
     /**
@@ -32,6 +39,10 @@ class Model extends EventEmitter {
         //console.log(data);
         this.tasks = [...data];
         this.emit('update');
+        if (this.start) {
+            this.emit('loadingState', {string: '', state: false})
+            this.start = false;
+        }
     }
 
     /**
@@ -40,10 +51,8 @@ class Model extends EventEmitter {
      */
 
     addSingleTask(data) {
-        const successString = 'Added new task!';
         this.tasks.push(data);
         this.emit('update');
-        this.emit('status', { string: successString, isSuccess: true });
     }
 
     /**
@@ -57,6 +66,8 @@ class Model extends EventEmitter {
             "Content-Type": "application/json",
         }
 
+        const successString = 'Added new task!';
+
         fetch('https://todo-simple-api.herokuapp.com/todos', {
             method: 'POST',
             headers: headers,
@@ -64,7 +75,8 @@ class Model extends EventEmitter {
         })
             .then(response => response.json())
             .then(res => this.addSingleTask(res.data))
-            .catch((e) => this.emit('status', { string: e, isSuccess: false }));
+            .then(() => this.emit('state', { string: successString, isSuccess: true }))
+            .catch((e) => this.emit('state', { string: e, isSuccess: false }));
     }
 
 
@@ -81,9 +93,9 @@ class Model extends EventEmitter {
             method: 'DELETE',
         })
             .then(response => response.json())
-            .then(() => this.emit('status', { string: successString, isSuccess: true }))
+            .then(() => this.emit('state', { string: successString, isSuccess: true }))
             .then(() => this.fetchTasks())
-            .catch((e) => this.emit('status', { string: e, isSuccess: false }))
+            .catch((e) => this.emit('state', { string: e, isSuccess: false }))
     }
 
     /**
@@ -114,9 +126,9 @@ class Model extends EventEmitter {
             })
         })
             .then(response => response.json())
-            .then(() => this.emit('status', { string: successString, isSuccess: true }))
+            .then(() => this.emit('state', { string: successString, isSuccess: true }))
             .then(() => this.fetchTasks())
-            .catch((e) => this.emit('status', { string: e, isSuccess: false }));
+            .catch((e) => this.emit('state', { string: e, isSuccess: false }));
     }
 
 }
