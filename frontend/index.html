@@ -1,1 +1,51 @@
-plik startowy aplikacji
+<!doctype html>
+<html class="no-js" lang="pl">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <title>toDo List</title>
+    <meta name="description" content="To do list">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <link rel="stylesheet" href="styles/css/main.css">
+</head>
+<!--[if lte IE 9]>
+    <p class="browserupgrade">You are using an <strong>outdated</strong> browser. Please <a href="https://browsehappy.com/">upgrade your browser</a> to improve your experience and security.</p>
+  <![endif]-->
+
+<!--
+    ROOT 
+-->
+<div id='root'>
+    <!--
+    TO DO LIST CONTAINER
+    -->
+    <div class='to-do-list-container'>
+        <header class='container-header'>
+            <h3>ToDo List</h3>
+        </header>
+        <!--
+            LIST OF TASKS CONTAINER
+        -->
+        <ul class='list-of-tasks'>
+
+        </ul>
+        <!--
+            ADD NEW TASK FIELD
+        -->
+        <div class='add-new-task container-row'>
+            <div class='add-task-button' tabindex="0" role="button" id='add-task-button'>
+                <div class='bar horizontal'></div>
+                <div class='bar vertical'></div>
+            </div>
+            <input id='text-field' class='text-field' type='text' name='task' placeholder='Type new task here...' value='' />
+        </div>
+    </div>
+</div>
+
+<script type="module" src="./js/main.js"></script>
+
+<body>
+
+</html>
