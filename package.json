@@ -1,0 +1,14 @@
+{
+  "name": "junior-recruitment-task",
+  "version": "1.0.0",
+  "main": "index.js",
+  "repository": "https://github.com/BardSlif/junior-recruitment-task.git",
+  "author": "Bartosz Ślifirski <b.slifirski@gmail.com>",
+  "license": "MIT",
+  "dependencies": {
+    "browser-sync": "^2.26.0",
+    "gulp": "^3.9.1",
+    "gulp-autoprefixer": "^6.0.0",
+    "gulp-sass": "^4.0.1"
+  }
+}
