@@ -4,7 +4,11 @@ import { setAttributes } from './extra.js'
 class View extends EventEmitter {
     constructor() {
         super();
-        //List container
+
+        //Section container
+        this.toDoListContainer = document.querySelector('.to-do-list-container');
+
+        //Tasks container
         this.tasksListNode = document.querySelector('.list-of-tasks');
 
         //Create new task button and event handler
@@ -14,17 +18,17 @@ class View extends EventEmitter {
     }
 
     /**
-     * Validate input, if not empty emit 'add' function 
+     * Validate input, if it's not empty emit 'add' function 
      * @param {object} evt event
      */
 
     validateInput(evt) {
         evt.preventDefault();
         if (!this.inputField.value) {
-            return console.log('nope');
+            return this.createStatusInfo(false, 'Input value cannot be empty!');
         }
 
-        this.emit('add', this.inputField.value);
+        return this.emit('add', this.inputField.value);
     }
 
     /**
@@ -44,6 +48,25 @@ class View extends EventEmitter {
     }
 
     /**
+     * Create message to communicate error or success when action is taken
+     * @param {boolean} isSuccess type of message
+     * @param {String} info output message
+     */
+
+    createStatusInfo(isSuccess = null, info) {
+
+        this.toDoListContainer.insertAdjacentHTML('beforebegin',
+            `<h2 class='operation-info ${isSuccess ? 'success' : 'error'}'>${info}</h2>`
+        );
+
+        setTimeout(() => {
+            const elem = document.querySelector('.operation-info');
+            elem.parentNode.removeChild(elem);
+        }, 1500)
+
+    }
+
+    /**
      * Get ID and emit 'update' function
      * @param {obj} evt event
      */
@@ -52,7 +75,7 @@ class View extends EventEmitter {
         const element = evt.target;
         const id = parseInt(element.id.substring(5));
 
-        this.emit('update', id);
+        return this.emit('update', id);
     }
 
     /**
@@ -64,7 +87,7 @@ class View extends EventEmitter {
         const item = evt.target;
         const id = parseInt(item.dataset.id);
 
-        this.emit('remove', id);
+        return this.emit('remove', id);
     }
 
     /**
@@ -109,8 +132,10 @@ class View extends EventEmitter {
      */
 
     addTask(item) {
+        this.inputField.value = '';
+
         const element = this.createTask(item);
-        this.tasksListNode.appendChild(element);
+        return this.tasksListNode.appendChild(element);
     }
 
     /**
@@ -119,7 +144,9 @@ class View extends EventEmitter {
      */
 
     render(tasksList) {
+
         this.tasksListNode.innerHTML = '';
+
         tasksList.forEach(element => {
             this.addTask(element);
         });

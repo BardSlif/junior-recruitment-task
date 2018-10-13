@@ -40,8 +40,10 @@ class Model extends EventEmitter {
      */
 
     addSingleTask(data) {
+        const successString = 'Added new task!';
         this.tasks.push(data);
         this.emit('update');
+        this.emit('status', { string: successString, isSuccess: true });
     }
 
     /**
@@ -62,7 +64,7 @@ class Model extends EventEmitter {
         })
             .then(response => response.json())
             .then(res => this.addSingleTask(res.data))
-            .catch((e) => console.log(e));
+            .catch((e) => this.emit('status', { string: e, isSuccess: false }));
     }
 
 
@@ -73,12 +75,15 @@ class Model extends EventEmitter {
 
     removeTask(id) {
 
+        const successString = 'Selected task removed!';
+
         fetch(`https://todo-simple-api.herokuapp.com/todos/${id}`, {
             method: 'DELETE',
         })
             .then(response => response.json())
+            .then(() => this.emit('status', { string: successString, isSuccess: true }))
             .then(() => this.fetchTasks())
-            .catch((e) => console.log(e));
+            .catch((e) => this.emit('status', { string: e, isSuccess: false }))
     }
 
     /**
@@ -92,6 +97,8 @@ class Model extends EventEmitter {
         const object = this.tasks.filter(element => element.id === id);
         //It's 1-length array so get the first element - object
         const obj = object[0];
+
+        const successString = 'Selected task updated!';
 
         const headers = {
             "Content-Type": "application/json",
@@ -107,8 +114,9 @@ class Model extends EventEmitter {
             })
         })
             .then(response => response.json())
+            .then(() => this.emit('status', { string: successString, isSuccess: true }))
             .then(() => this.fetchTasks())
-            .catch((e) => console.log(e));
+            .catch((e) => this.emit('status', { string: e, isSuccess: false }));
     }
 
 }
