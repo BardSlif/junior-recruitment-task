@@ -81,6 +81,36 @@ class Model extends EventEmitter {
             .catch((e) => console.log(e));
     }
 
+    /**
+     * Get object by id, update it with PUT and call fetchTasks 
+     * @param {number} id of task
+     */
+
+    updateTask(id) {
+
+        //Find object by ID
+        const object = this.tasks.filter(element => element.id === id);
+        //It's 1-length array so get the first element - object
+        const obj = object[0];
+
+        const headers = {
+            "Content-Type": "application/json",
+        }
+
+        fetch(`https://todo-simple-api.herokuapp.com/todos/${id}`, {
+            method: 'PUT',
+            headers: headers,
+            body: JSON.stringify({
+                title: obj.title,
+                description: obj.description,
+                isComplete: !obj.isComplete
+            })
+        })
+            .then(response => response.json())
+            .then(() => this.fetchTasks())
+            .catch((e) => console.log(e));
+    }
+
 }
 
 export default Model;

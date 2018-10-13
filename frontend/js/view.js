@@ -15,7 +15,7 @@ class View extends EventEmitter {
 
     /**
      * Validate input, if not empty emit 'add' function 
-     * @param {objet} evt  
+     * @param {object} evt event
      */
 
     validateInput(evt) {
@@ -35,9 +35,24 @@ class View extends EventEmitter {
     addEventListeners(item) {
 
         const trashIcon = item.querySelector('.trash-icon');
+        const checkBox = item.querySelector('input[type=checkbox]');
+
         trashIcon.addEventListener('click', (e) => this.handleRemove(e));
+        checkBox.addEventListener('click', (e) => this.handleStatus(e));
 
         return item;
+    }
+
+    /**
+     * Get ID and emit 'update' function
+     * @param {obj} evt event
+     */
+
+    handleStatus(evt) {
+        const element = evt.target;
+        const id = parseInt(element.id.substring(5));
+
+        this.emit('update', id);
     }
 
     /**
