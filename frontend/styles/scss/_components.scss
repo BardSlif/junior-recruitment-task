@@ -71,8 +71,46 @@ body {
     */
 
     .text-field {
-      display: block;
       width: 100%;
+    }
+
+    /*
+    * CONTAINER ROW LABEL + ICON STYLING
+    */
+
+    label,
+    .text-field {
+      display: block;
+      margin-left: 25px;
+    }
+
+    input[type="checkbox"] {
+      width: 12px;
+      height: 12px;
+    }
+
+    input:checked + label {
+      text-decoration: line-through;
+      color: $done-task-color;
+    }
+
+    .trash-icon {
+      mask-image: url("../../images/trash.png");
+      cursor: pointer;
+      position: absolute;
+      right: 15px;
+      top: 50%;
+      transform: translateY(-50%);
+      height: 12px;
+      width: 11px;
+    }
+
+    input + label + .trash-icon {
+      background-color: $base-dark-color;
+    }
+
+    input:checked + label + .trash-icon {
+      background-color: $done-task-color;
     }
 
     /*
