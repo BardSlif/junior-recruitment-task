@@ -15,8 +15,8 @@ This project uses backend public API to collect data provided by Qunabu from [he
 To use this project in development mode: 
 * Download or clone the project 
 * Install all project dependencies with `yarn install`
-* Run `gulp watch` - it compiles all scss files into one main.css and also starts dev server thanks to `browser-sync` on default port `3000` if not type `localhost:3000` in your browser
-* Project should start automatically in your default browser
+* Run `gulp watch` - it compiles all scss files into one main.css and also starts dev server thanks to `browser-sync` on default port `3000`
+* Project should start automatically in your default browser, if not: type `localhost:3000` in your browser
  
 ## Dependencies 
 
