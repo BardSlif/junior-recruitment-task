@@ -65,6 +65,22 @@ class Model extends EventEmitter {
             .catch((e) => console.log(e));
     }
 
+
+    /**
+     * DELETE task from API and fetch tasks again
+     * @param {number} id 
+     */
+
+    removeTask(id) {
+
+        fetch(`https://todo-simple-api.herokuapp.com/todos/${id}`, {
+            method: 'DELETE',
+        })
+            .then(response => response.json())
+            .then(() => this.fetchTasks())
+            .catch((e) => console.log(e));
+    }
+
 }
 
 export default Model;

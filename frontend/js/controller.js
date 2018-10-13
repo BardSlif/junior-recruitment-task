@@ -8,6 +8,8 @@ class Controller {
 
         //Handle 'add' call from view 
         view.handle('add', (data) => this.addTask(data));
+        //Handle 'remove call' from view
+        view.handle('remove', (id) => this.removeTask(id));
 
         // Start with fetching task list from API
         model.fetchTasks();
@@ -25,6 +27,15 @@ class Controller {
             description: '',
             isComplete: false
         })
+    }
+
+    /**
+     * Call removTask function
+     * @param {number} id id number of task
+     */
+
+    removeTask(id) {
+        this.model.removeTask(id);
     }
 
     /**

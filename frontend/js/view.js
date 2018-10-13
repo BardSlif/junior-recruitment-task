@@ -17,7 +17,7 @@ class View extends EventEmitter {
      * Validate input, if not empty emit 'add' function 
      * @param {objet} evt  
      */
-    
+
     validateInput(evt) {
         evt.preventDefault();
         if (!this.inputField.value) {
@@ -33,7 +33,23 @@ class View extends EventEmitter {
      */
 
     addEventListeners(item) {
+
+        const trashIcon = item.querySelector('.trash-icon');
+        trashIcon.addEventListener('click', (e) => this.handleRemove(e));
+
         return item;
+    }
+
+    /**
+     * Get ID and emit 'remove' function
+     * @param {obj} evt event 
+     */
+
+    handleRemove(evt) {
+        const item = evt.target;
+        const id = parseInt(item.dataset.id);
+
+        this.emit('remove', id);
     }
 
     /**
