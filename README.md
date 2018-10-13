@@ -17,7 +17,6 @@ To use this project in development mode:
 * Install all project dependencies with `yarn install`
 * Run `gulp watch` - it compiles all scss files into one main.css and also starts dev server thanks to `browser-sync` on default port `3000`
 * Project should start automatically in your default browser
-* You can also run `gulp styles` and after that open `frontend/index.html` file
  
 ## Dependencies 
 
