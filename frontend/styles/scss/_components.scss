@@ -111,6 +111,7 @@ body {
       color: $done-task-color;
     }
 
+    //trash icon styling
     .trash-icon {
       mask-image: url("../../images/trash.png");
       cursor: pointer;
@@ -128,6 +129,11 @@ body {
 
     input:checked + label + .trash-icon {
       background-color: $done-task-color;
+    }
+
+    //When dragging over element
+    &.over {
+        border-bottom: 2px solid $base-dark-color;
     }
 
     /*
@@ -163,6 +169,10 @@ body {
     }
   }
 }
+
+/**
+* STYLING OUTPUT MESSAGES
+*/
 
 .operation-info {
   position: absolute;
