@@ -87,7 +87,7 @@ class Model extends EventEmitter {
     }
 
     /**
-     * Get object by id, update it with PUT and call fetchTasks 
+     * Get object by id, update it with PUT and fetch tasks again
      * @param {number} id of task
      */
 

@@ -15,11 +15,14 @@ class View extends EventEmitter {
         this.addTaskButton = document.querySelector('.add-task-button');
         this.addTaskButton.addEventListener('click', (evt) => { this.validateInput(evt) })
         this.inputField = document.getElementById('text-field');
+
+        //Dragged item
+        this.dragItem = null;
     }
 
     /**
      * Validate input, if it's not empty emit 'add' function 
-     * @param {object} evt event
+     * @param {event} evt 
      */
 
     validateInput(evt) {
@@ -37,6 +40,8 @@ class View extends EventEmitter {
      */
 
     addEventListeners(item) {
+
+        this.dragAndDropFunc(item);
 
         const trashIcon = item.querySelector('.trash-icon');
         const checkBox = item.querySelector('input[type=checkbox]');
@@ -62,13 +67,13 @@ class View extends EventEmitter {
         setTimeout(() => {
             const elem = document.querySelector('.operation-info');
             elem.parentNode.removeChild(elem);
-        }, 1500)
+        }, 1000)
 
     }
 
     /**
      * Get ID and emit 'update' function
-     * @param {obj} evt event
+     * @param {event} evt 
      */
 
     handleStatus(evt) {
@@ -80,7 +85,7 @@ class View extends EventEmitter {
 
     /**
      * Get ID and emit 'remove' function
-     * @param {obj} evt event 
+     * @param {event} evt  
      */
 
     handleRemove(evt) {
@@ -153,6 +158,85 @@ class View extends EventEmitter {
 
     }
 
+    /**
+     * Add drag and drop functionality by adding event listeners
+     * @param {object} item li element 
+     */
+
+    dragAndDropFunc(item) {
+        item.addEventListener('dragstart', (evt) => this.handleDragStart(evt));
+        item.addEventListener('dragover', (evt) => this.handleDragOver(evt));
+        item.addEventListener('dragleave', (evt) => this.handleDragLeave(evt));
+        item.addEventListener('dragend', (evt) => this.handleDragEnd(evt));
+        item.addEventListener('drop', (evt) => this.handleDrop(evt));
+    }
+
+    /**
+     * When drag is started
+     * @param {event} evt drag event
+     */
+
+    handleDragStart(evt) {
+
+        this.dragItem = evt.target;
+
+        evt.dataTransfer.effectAllowed = 'move';
+        evt.dataTransfer.setData('text/html', evt.target.outerHTML);
+        evt.target.classList.add('drag-item');
+    }
+
+    /**
+     * When dragging over 
+     * @param {event} evt drag event
+     */
+
+    handleDragOver(evt) {
+        evt.preventDefault();
+
+        evt.target.classList.add('over');
+        evt.dataTransfer.dropEffect = 'move';
+
+    }
+
+    /**
+     * When dragged element leaves a valid drop target
+     * @param {event} evt drag event
+     */
+
+    handleDragLeave(evt) {
+        evt.target.classList.remove('over');
+    }
+
+    /**
+     * When finish drag event
+     * @param {event} evt drag event
+     */
+
+    handleDragEnd(evt) {
+        evt.target.classList.remove('over');
+    }
+
+    /**
+     * When drop dragged element
+     * @param {event} evt drop event
+     */
+
+    handleDrop(evt) {
+
+        evt.stopPropagation();
+
+        // Don't do anything if dropping the same column u started to drag
+        if (this.dragItem != evt.target) {
+            evt.target.parentNode.removeChild(this.dragItem);
+            const dropHTML = evt.dataTransfer.getData('text/html');
+            evt.target.insertAdjacentHTML('beforebegin', dropHTML);
+            const dropElem = evt.target.previousSibling;
+            this.dragAndDropFunc(dropElem);
+        }
+
+        evt.target.classList.remove('over');
+
+    }
 }
 
 export default View;
