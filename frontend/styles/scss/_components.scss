@@ -146,3 +146,20 @@ body {
     }
   }
 }
+
+.operation-info {
+  position: absolute;
+  display: block;
+  width: 100%;
+  bottom: 0;
+  margin-bottom: 20px;
+  text-align: center;
+
+  &.error {
+    color: red;
+  }
+
+  &.success {
+    color: green;
+  }
+}
